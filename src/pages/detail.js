@@ -18,7 +18,7 @@ function Detail(props) {
 
   useEffect(() => {
     if (isNaN(ival) == true) {
-      alert('그러지마세요');
+      alert('숫자만 입력 가능합니다');
     }
   }, [ival]);
 
@@ -28,7 +28,6 @@ function Detail(props) {
 
   return (
     <div className='container'>
-      <YellowBtn>버튼</YellowBtn>
       <div className='row'>
         <div className='col-md-6'>
           <img
@@ -37,19 +36,17 @@ function Detail(props) {
           />
         </div>
         <div className='col-md-6'>
-          <input onChange={(e) => onInput(e)} type='text'></input>
           <h4 className='pt-5'>{찾은상품.title}</h4>
           <p>{찾은상품.content}</p>
           <p>{찾은상품.price}</p>
-          <button className='btn btn-danger'>주문하기</button>
+          <p>
+            주문수량: <input onChange={(e) => onInput(e)} type='text'></input>
+            <button className='btn btn-danger'>주문하기</button>
+          </p>
         </div>
       </div>
     </div>
   );
-}
-
-function Alert() {
-  return <div>숫자만 입력 가능합니다</div>;
 }
 
 export default Detail;

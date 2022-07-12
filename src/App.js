@@ -91,13 +91,21 @@ function About() {
 }
 
 function Card(props) {
+  let navigate = useNavigate();
+
   return (
     <Col md={4}>
-      <img
-        src={
-          'https://codingapple1.github.io/shop/shoes' + (props.i + 1) + '.jpg'
-        }
-      />
+      <Nav.Link
+        onClick={() => {
+          navigate('/detail/' + props.i);
+        }}
+      >
+        <img
+          src={
+            'https://codingapple1.github.io/shop/shoes' + (props.i + 1) + '.jpg'
+          }
+        />
+      </Nav.Link>
       <h4>{props.shoe.title}</h4>
       <p>{props.shoe.content}</p>
       <p>Price: {props.shoe.price}</p>
