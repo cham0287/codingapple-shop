@@ -5,10 +5,14 @@ import { useState } from 'react';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/detail';
 import axios from 'axios';
+import { click } from '@testing-library/user-event/dist/click';
 
 function App() {
   let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
+  let [clickCount, setClickCount] = useState(0);
+  let [loadState, setLoadState] = useState(false);
+  let [noMore, setNomore] = useState(false);
 
   function loadData(res) {
     let newShoes = [...shoes, ...res.data];
@@ -49,20 +53,50 @@ function App() {
               <Container>
                 <Row>
                   {shoes.map((shoe, i) => {
-                    return <Card i={i} shoe={shoe} key={i} />;
+                    return (
+                      <>
+                        <Card i={i} shoe={shoe} key={i} />
+                      </>
+                    );
                   })}
+                  {loadState == true ? <Loading /> : null}
+                  {noMore == true ? <NoMore /> : null}
                 </Row>
               </Container>
               <button
                 onClick={() => {
-                  axios
-                    .get('https://codingapple1.github.io/shop/data2.json')
-                    .then((res) => {
-                      loadData(res);
-                    })
-                    .catch((err) => {
-                      console.err(err);
-                    });
+                  if (clickCount == 0) {
+                    setLoadState(true);
+                    setTimeout(() => {
+                      axios
+                        .get('https://codingapple1.github.io/shop/data2.json')
+                        .then((res) => {
+                          loadData(res);
+                          setLoadState(false);
+                        })
+                        .catch((err) => {
+                          console.err(err);
+                        });
+                    }, 1000);
+                  }
+                  if (clickCount == 1) {
+                    setLoadState(true);
+                    setTimeout(() => {
+                      axios
+                        .get('https://codingapple1.github.io/shop/data3.json')
+                        .then((res) => {
+                          loadData(res);
+                          setLoadState(false);
+                        })
+                        .catch((err) => {
+                          console.err(err);
+                        });
+                    }, 1000);
+                  }
+                  if (clickCount > 1) {
+                    setNomore(true);
+                  }
+                  setClickCount((prevCount) => prevCount + 1);
                 }}
               >
                 더보기
@@ -86,6 +120,20 @@ function About() {
     <>
       <div>어바웃페이지</div>
       <Outlet />
+    </>
+  );
+}
+function Loading() {
+  return (
+    <>
+      <div>로딩중입니다</div>
+    </>
+  );
+}
+function NoMore() {
+  return (
+    <>
+      <div>더이상 불러올 페이지가 없습니다</div>
     </>
   );
 }
