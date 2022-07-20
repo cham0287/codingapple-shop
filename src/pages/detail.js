@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { Nav } from 'react-bootstrap';
 
 let YellowBtn = styled.button`
   background: yellow;
@@ -15,6 +16,9 @@ function Detail(props) {
     return shoe.id == id;
   });
   let [ival, setIval] = useState('');
+  let [tab, setTab] = useState(0);
+  let [fade, setFade] = useState('');
+  let [fade2, setFade2] = useState('');
 
   useEffect(() => {
     if (isNaN(ival) == true) {
@@ -22,12 +26,28 @@ function Detail(props) {
     }
   }, [ival]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setFade('end');
+    }, 100);
+    return () => {
+      setFade('');
+    };
+  }, [tab]);
+
+  useEffect(() => {
+    setFade2('end');
+    return () => {
+      setFade2('');
+    };
+  }, []);
+
   function onInput(e) {
     setIval(e.target.value);
   }
 
   return (
-    <div className='container'>
+    <div className={'container start ' + fade2}>
       <div className='row'>
         <div className='col-md-6'>
           <img
@@ -43,6 +63,26 @@ function Detail(props) {
             주문수량: <input onChange={(e) => onInput(e)} type='text'></input>
             <button className='btn btn-danger'>주문하기</button>
           </p>
+          <Nav variant='tabs' defaultActiveKey='link0'>
+            <Nav.Item>
+              <Nav.Link eventKey='link0' onClick={() => setTab(0)}>
+                버튼0
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey='link1' onClick={() => setTab(1)}>
+                버튼1
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey='link2' onClick={() => setTab(2)}>
+                버튼2
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+          {tab == 0 ? <div className={'start ' + fade}>내용0</div> : null}
+          {tab == 1 ? <div className={'start ' + fade}>내용1</div> : null}
+          {tab == 2 ? <div className={'start ' + fade}>내용2</div> : null}
         </div>
       </div>
     </div>

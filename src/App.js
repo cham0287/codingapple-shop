@@ -3,9 +3,9 @@ import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
 import data from './data';
 import { useState } from 'react';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Detail from './pages/detail';
+import Detail from './pages/Detail';
 import axios from 'axios';
-import { click } from '@testing-library/user-event/dist/click';
+import Cart from './pages/Cart';
 
 function App() {
   let [shoes, setShoes] = useState(data);
@@ -32,6 +32,14 @@ function App() {
               className='nbar'
             >
               Home
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate('/about');
+              }}
+              className='nbar'
+            >
+              About
             </Nav.Link>
             <Nav.Link
               onClick={() => {
@@ -66,18 +74,19 @@ function App() {
               <button
                 onClick={() => {
                   if (clickCount == 0) {
-                    setLoadState(true);
+                    setLoadState(true); //기본 상태를 false로 두고 클릭하면 로딩중을 보여주다가
                     setTimeout(() => {
                       axios
                         .get('https://codingapple1.github.io/shop/data2.json')
                         .then((res) => {
                           loadData(res);
-                          setLoadState(false);
+                          setLoadState(false); //get작업이 완료되면 로딩중을 다시 false로 바꿔서 안보이게함
                         })
                         .catch((err) => {
                           console.err(err);
+                          setLoadState(false); //get요청이 실패해서 catch로 갈 때도 처리해줘야됨
                         });
-                    }, 1000);
+                    }, 1000); //로딩시간이 너무 짧아서 settimeout을 1초를 일부러 만들어주었다
                   }
                   if (clickCount == 1) {
                     setLoadState(true);
@@ -90,13 +99,15 @@ function App() {
                         })
                         .catch((err) => {
                           console.err(err);
+                          setLoadState(false);
                         });
                     }, 1000);
                   }
                   if (clickCount > 1) {
                     setNomore(true);
                   }
-                  setClickCount((prevCount) => prevCount + 1);
+                  setClickCount((prevCount) => prevCount + 1); //클릭할때마다 클릭수를 state에 저장해서 누를때마다 다른 곳에서 요청을 받아오고
+                  //3번이상 클릭했을 때에는 더 불러올 상품이 없습니다 라는 내용을 보여주도록 설정함
                 }}
               >
                 더보기
@@ -105,6 +116,7 @@ function App() {
           }
         />
         <Route path='/detail/:id' element={<Detail shoes={shoes} />} />
+        <Route path='/cart' element={<Cart />} />
         <Route path='/about' element={<About />}>
           <Route path='members' element={<div>멤버들</div>} />
           <Route path='location' element={<div>회사위치</div>} />
@@ -116,9 +128,26 @@ function App() {
 }
 
 function About() {
+  let navigate = useNavigate();
   return (
     <>
       <div>어바웃페이지</div>
+      <Nav.Link
+        onClick={() => {
+          navigate('/about/members');
+        }}
+        className='nbar'
+      >
+        members
+      </Nav.Link>
+      <Nav.Link
+        onClick={() => {
+          navigate('/about/location');
+        }}
+        className='nbar'
+      >
+        location
+      </Nav.Link>
       <Outlet />
     </>
   );
