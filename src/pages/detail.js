@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Nav } from 'react-bootstrap';
+import { addItem } from '../store';
+import { useDispatch } from 'react-redux';
 
 let YellowBtn = styled.button`
   background: yellow;
@@ -10,6 +12,7 @@ let YellowBtn = styled.button`
 `;
 
 function Detail(props) {
+  let dispatch = useDispatch();
   let { id } = useParams();
   let idNum = parseInt(id) + 1;
   let 찾은상품 = props.shoes.find((shoe) => {
@@ -61,7 +64,20 @@ function Detail(props) {
           <p>{찾은상품.price}</p>
           <p>
             주문수량: <input onChange={(e) => onInput(e)} type='text'></input>
-            <button className='btn btn-danger'>주문하기</button>
+            <button
+              className='btn btn-danger'
+              onClick={() => {
+                dispatch(
+                  addItem({
+                    id: 찾은상품.id,
+                    name: 찾은상품.title,
+                    count: 찾은상품.count,
+                  })
+                );
+              }}
+            >
+              주문하기
+            </button>
           </p>
           <Nav variant='tabs' defaultActiveKey='link0'>
             <Nav.Item>

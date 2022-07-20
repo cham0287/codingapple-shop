@@ -33,14 +33,7 @@ function App() {
             >
               Home
             </Nav.Link>
-            <Nav.Link
-              onClick={() => {
-                navigate('/about');
-              }}
-              className='nbar'
-            >
-              About
-            </Nav.Link>
+
             <Nav.Link
               onClick={() => {
                 navigate('/detail');
@@ -48,6 +41,22 @@ function App() {
               className='nbar'
             >
               Detail
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate('/cart');
+              }}
+              className='nbar'
+            >
+              Cart
+            </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate('/about');
+              }}
+              className='nbar'
+            >
+              About
             </Nav.Link>
           </Nav>
         </Container>

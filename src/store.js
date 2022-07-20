@@ -12,13 +12,16 @@ let cartData = createSlice({
     { id: 2, name: 'Grey Yordan', count: 1 },
   ],
   reducers: {
+    addItem(state, action) {
+      state.push(action.payload);
+    },
     addCount(state, action) {
       state[action.payload].count += 1;
     },
   },
 });
 
-export let { addCount } = cartData.actions;
+export let { addCount, addItem } = cartData.actions;
 
 export default configureStore({
   reducer: {
