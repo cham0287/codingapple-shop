@@ -15,13 +15,21 @@ let cartData = createSlice({
     addItem(state, action) {
       state.push(action.payload);
     },
+    removeItem(state, action) {
+      state.splice([action.payload], 1);
+    },
     addCount(state, action) {
       state[action.payload].count += 1;
+    },
+    minusCount(state, action) {
+      if (state[action.payload].count > 0) {
+        state[action.payload].count -= 1;
+      }
     },
   },
 });
 
-export let { addCount, addItem } = cartData.actions;
+export let { addCount, minusCount, addItem, removeItem } = cartData.actions;
 
 export default configureStore({
   reducer: {
