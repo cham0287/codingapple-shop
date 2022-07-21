@@ -6,7 +6,6 @@ import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './pages/Detail';
 import axios from 'axios';
 import Cart from './pages/Cart';
-import { useQuery } from 'react-query';
 
 function App() {
   useEffect(() => {
@@ -18,11 +17,7 @@ function App() {
   let [loadState, setLoadState] = useState(false);
   let [noMore, setNomore] = useState(false);
 
-  let result = useQuery('작명', () =>
-    axios.get('https://codingapple1.github.io/userdata.json').then((a) => {
-      return a.data;
-    })
-  );
+
 
   function loadData(res) {
     let newShoes = [...shoes, ...res.data];
@@ -69,7 +64,6 @@ function App() {
               About
             </Nav.Link>
           </Nav>
-          <Nav className='ms-auto userName'>반가워요 kim</Nav>
         </Container>
       </Navbar>
       <Routes>
