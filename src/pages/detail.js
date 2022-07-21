@@ -12,6 +12,15 @@ let YellowBtn = styled.button`
 `;
 
 function Detail(props) {
+  useEffect(() => {
+    let 꺼낸거 = localStorage.getItem('watched');
+    꺼낸거 = JSON.parse(꺼낸거);
+    꺼낸거.push(찾은상품.id);
+    꺼낸거 = new Set(꺼낸거);
+    꺼낸거 = Array.from(꺼낸거);
+    localStorage.setItem('watched', JSON.stringify(꺼낸거));
+    console.log('실행');
+  }, []);
   let dispatch = useDispatch();
   let { id } = useParams();
   let idNum = parseInt(id) + 1;
